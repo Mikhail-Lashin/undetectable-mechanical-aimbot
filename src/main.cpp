@@ -69,13 +69,12 @@ void draw_debug_info(cv::Mat& frame,
     // Выделение всех целей
     for (const auto& contour : all_contours) {
         cv::Rect bbox = cv::boundingRect(contour);
-        cv::rectangle(frame, bbox, cv::Scalar(0, 255, 0), 2); // рамка
+        cv::rectangle(frame, bbox, cv::Scalar(0, 255, 0), 1); // рамка
     }
 
     // Выделение приоритетной цели
     cv::Point screen_center(frame.cols / 2, frame.rows / 2);
-    cv::circle(frame, priority_target_pos, 7, cv::Scalar(0, 0, 255), -1); // круг
-    cv::line(frame, screen_center, priority_target_pos, cv::Scalar(255, 0, 0), 2); // линия
+    cv::line(frame, screen_center, priority_target_pos, cv::Scalar(255, 255, 255), 1); // линия
 }
 
 int main() {
