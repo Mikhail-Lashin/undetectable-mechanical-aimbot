@@ -43,7 +43,7 @@ bool find_targets(const cv::Mat& binImage,
     }
 
     double min_dist_to_center = DBL_MAX;
-    cv::Point screen_center(binImage.rows / 2, binImage.cols / 2);
+    cv::Point screen_center(binImage.cols / 2, binImage.rows / 2);
     for (const auto& contour : out_all_contours) {
         cv::Moments m = cv::moments(contour);
         if (m.m00 != 0) {
