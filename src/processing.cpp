@@ -19,6 +19,7 @@ cv::Mat HSV_to_Binary(const cv::Mat& hsvImage) {
 }
 
 bool find_targets(const cv::Mat& binImage,
+                  const cv::Point& aim_center,
                   std::vector<std::vector<cv::Point>>& out_all_contours,
                   cv::Point& out_priority_target_pos)
 {
@@ -37,7 +38,6 @@ bool find_targets(const cv::Mat& binImage,
     }
 
     double min_dist_to_center = DBL_MAX;
-    cv::Point screen_center(binImage.cols / 2, binImage.rows / 2);
     for (const auto& contour : out_all_contours) {
         cv::Moments m = cv::moments(contour);
         if (m.m00 != 0) {
@@ -45,7 +45,7 @@ bool find_targets(const cv::Mat& binImage,
                                     static_cast<int>(m.m10 / m.m00),
                                     static_cast<int>(m.m01 / m.m00)
                                     );
-            double dist = cv::norm(current_center - screen_center);
+            double dist = cv::norm(current_center - aim_center);
 
             if (dist < min_dist_to_center) {
                 min_dist_to_center = dist;
@@ -57,6 +57,7 @@ bool find_targets(const cv::Mat& binImage,
 }
 
 void draw_debug_info(cv::Mat& frame,
+                     const cv::Point& aim_center,
                      const std::vector<std::vector<cv::Point>>& all_contours,
                      const cv::Point& priority_target_pos)
 {
@@ -67,6 +68,31 @@ void draw_debug_info(cv::Mat& frame,
     }
 
     // Выделение приоритетной цели
-    cv::Point screen_center(frame.cols / 2, frame.rows / 2);
-    cv::line(frame, screen_center, priority_target_pos, cv::Scalar(255, 255, 255), 1); // линия
+    cv::line(frame, aim_center, priority_target_pos, cv::Scalar(255, 255, 255), 1); // линия
+}
+
+bool find_crosshair(const cv::Mat& frame, const cv::Mat& crosshair_template, cv::Point& out_center_pos) {
+    // Создание матрицы для хранения результатов сравнения
+    cv::Mat result;
+    int result_cols = frame.cols - crosshair_template.cols + 1;
+    int result_rows = frame.rows - crosshair_template.rows + 1;
+    result.create(result_rows, result_cols, CV_32FC1);
+
+    // Сопоставление с шаблоном
+    // Метод TM_CCOEFF_NORMED устойчив к изменениям яркости
+    cv::matchTemplate(frame, crosshair_template, result, cv::TM_CCOEFF_NORMED);
+
+    // Точка с максимальным совпадением
+    double minVal, maxVal;
+    cv::Point minLoc, maxLoc;
+    cv::minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
+    
+    if (maxVal >= MATCH_THRESHOLD) {
+        // maxLoc - это левый верхний угол найденного шаблона. Нужно пересчитать на центр шаблона:
+        out_center_pos.x = maxLoc.x + crosshair_template.cols / 2;
+        out_center_pos.y = maxLoc.y + crosshair_template.rows / 2;
+        return true;
+    }
+
+    return false; // совпадение недостаточно хорошее
 }

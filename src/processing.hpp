@@ -25,11 +25,13 @@ cv::Mat HSV_to_Binary(const cv::Mat& hsvImage);
  * масс ближе всего к геометрическому центру изображения
  * 
  * @param[in] binImage Входное одноканальное бинарное изображение (CV_8UC1)
+ * @param[in] aim_center Координаты перекрестья прицела
  * @param[out] out_all_contours Вектор, заполненный всеми найденными контурами (целями)
  * @param[out] out_priority_target_pos Переменная, хранящая позицию центра приоритетной цели
  * @return true, если хотя бы одна подходящая цель была найдена, иначе false
  */
 bool find_targets(const cv::Mat& binImage,
+                  const cv::Point& aim_center,
                   std::vector<std::vector<cv::Point>>& out_all_contours,
                   cv::Point& out_priority_target_pos);
 
@@ -37,14 +39,23 @@ bool find_targets(const cv::Mat& binImage,
 /**
  * @brief Рисует отладочную информацию на кадре
  * 
- * Обводит все найденные
- * цели зелеными рамками и рисует линию от центра прицела до приоритетной цели
+ * Обводит все найденные цели зелеными рамками и рисует линию от центра прицела до приоритетной цели
  * 
  * @param[in,out] frame Изображение, на котором будет производиться отрисовка
+ * @param[in] aim_center Координаты перекрестья прицела
  * @param[in] all_contours Вектор со всеми найденными целями для отрисовки
  * @param[in] priority_target_pos Координаты приоритетной цели
- * @param[in] aim_center Координаты точки прицеливания (центра экрана)
  */                  
 void draw_debug_info(cv::Mat& frame,
+                     const cv::Point& aim_center,
                      const std::vector<std::vector<cv::Point>>& all_contours,
                      const cv::Point& priority_target_pos);
+
+/**
+ * @brief Находит позицию прицела на изображении методом сопоставления с шаблоном
+ * @param[in] frame Кадр, на котором производится поиск
+ * @param[in] crosshair_template Изображение-шаблон прицела
+ * @param[out] out_center_pos Координаты найденного центра прицела
+ * @return true в случае успешного нахождения с достаточной уверенностью, иначе false
+ */
+bool find_crosshair(const cv::Mat& frame, const cv::Mat& crosshair_template, cv::Point& out_center_pos);

@@ -12,3 +12,5 @@ const int V_MAX = 255;
 
 const cv::Scalar LOWER_RANGE_HSV(H_MIN, S_MIN, V_MIN); // диапазон цветов, соответствующий мишеням (модель HSV)
 const cv::Scalar UPPER_RANGE_HSV(H_MAX, S_MAX, V_MAX);
+
+const double MATCH_THRESHOLD = 0.8; // порог уверенности (для поиска перекрестья прицела по шаблону)
