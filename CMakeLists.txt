@@ -9,6 +9,6 @@ find_package(OpenCV REQUIRED COMPONENTS core highgui imgproc videoio)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(aimbot src/main.cpp)
+add_executable(aimbot src/main.cpp src/processing.cpp)
 
 target_link_libraries(aimbot ${OpenCV_LIBS})
