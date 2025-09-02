@@ -74,3 +74,17 @@ bool find_crosshair(const cv::Mat& frame, const cv::Mat& crosshair_template, cv:
  */
 bool initialize_video_streams(const std::string& input_path, const std::string& output_path,
                               cv::VideoCapture& out_cap, cv::VideoWriter& out_writer);
+
+/**
+ * @brief Калибрует центр прицеливания путем поиска шаблона на первом кадре видео.
+ * 
+ * Считывает первый кадр из видеопотока, находит на нем изображение прицела
+ * с помощью cv::matchTemplate и возвращает его центральные координаты.
+ * После выполнения сбрасывает видеопоток на начало.
+ * 
+ * @param[in,out] cap Инициализированный объект VideoCapture. Будет прочитан и сброшен.
+ * @param[in] template_path Путь к файлу с шаблоном прицела.
+ * @param[out] out_aim_center Переменная, в которую будут записаны координаты найденного прицела.
+ * @return true в случае успешного нахождения прицела, иначе false.
+ */
+bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_path, cv::Point& out_aim_center);

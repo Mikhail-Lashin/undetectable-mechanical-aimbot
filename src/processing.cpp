@@ -120,3 +120,35 @@ bool initialize_video_streams(const std::string& input_path, const std::string& 
     
     return true;
 }
+
+bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_path, cv::Point& out_aim_center) {
+    // загрузка шаблона
+    cv::Mat crosshair_template = cv::imread(template_path, cv::IMREAD_GRAYSCALE);
+    if (crosshair_template.empty()) {
+        std::cout << "Error: Could not open the crosshair template: " << template_path << std::endl;
+        return false;
+    }
+
+    // считывание первого кадра для поиска
+    cv::Mat first_frame;
+    cap.read(first_frame);
+    if (first_frame.empty()) {
+        std::cout << "Error: Video is empty or could not read first frame." << std::endl;
+        return false;
+    }
+
+    // подготовка кадра к поиску (перевод в Ч/Б)
+    cv::Mat first_frame_gray;
+    cv::cvtColor(first_frame, first_frame_gray, cv::COLOR_BGR2GRAY);
+
+    // поиск прицела
+    if (!find_crosshair(first_frame_gray, crosshair_template, out_aim_center)) {
+        std::cout << "Error: Crosshair not found on the first frame. Check template or threshold." << std::endl;
+        return false;
+    }
+
+    // возврат видео на начало, чтобы основной цикл обработал и первый кадр тоже
+    cap.set(cv::CAP_PROP_POS_FRAMES, 0);
+    
+    return true;
+}

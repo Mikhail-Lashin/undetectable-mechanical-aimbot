@@ -8,45 +8,22 @@
 int main() {
     const std::string input_path = "src/input/input.mp4";
     const std::string output_path = "src/output/output.mp4";
-    
-    // -------------------- Открытие и настройка видеопотока --------------------
 
-    cv::VideoCapture cap;
+    cv::VideoCapture cap; // открытие и настройка видеопотока
     cv::VideoWriter writer;
     if (!initialize_video_streams(input_path, output_path, cap, writer)) {
         return -1;
     }
     std::cout << "Video streams initialized successfully." << std::endl;
 
-    // -------------------- Поиск начала координат (перекрестье прицела) --------------------
-
-    const std::string template_path = "src/input/crosshair_template.png";
-    cv::Mat crosshair_template = cv::imread(template_path, cv::IMREAD_GRAYSCALE); // Читаем шаблон как Ч/Б
-    if (crosshair_template.empty()) {
-        std::cout << "Error: Could not open the crosshair template: " << template_path << std::endl;
+    const std::string template_path = "src/input/crosshair_template.png"; // поиск начала координат (перекрестье)
+    cv::Point AIM_CENTER;
+    if (!calibrate_aim_center(cap, template_path, AIM_CENTER)) {
         return -1;
     }
-
-    cv::Mat first_frame; // считывание 1го кадра для поиска перекрестья прицела
-    cap.read(first_frame);
-    if (first_frame.empty()) {
-        std::cout << "Error: Video is empty or could not read first frame." << std::endl;
-        return -1;
-    }
-    
-    cv::Point AIM_CENTER; // перекрестье прицела
-    cv::Mat first_frame_gray;
-    cv::cvtColor(first_frame, first_frame_gray, cv::COLOR_BGR2GRAY); // поиск по шаблону лучше делать на ЧБ-картинке
-
-    if (!find_crosshair(first_frame_gray, crosshair_template, AIM_CENTER)) {
-        std::cout << "Error: Crosshair not found on the first frame. Check template image or threshold." << std::endl;
-        return -1;
-    }
-
-    // -------------------- Основной цикл --------------------
 
     cv::Mat frame;
-    while (true) {
+    while (true) { // основной цикл
         cap.read(frame);
         if (frame.empty()) {
             break;
