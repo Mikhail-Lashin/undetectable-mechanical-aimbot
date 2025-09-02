@@ -22,28 +22,8 @@ int main() {
         return -1;
     }
 
-    cv::Mat frame;
-    while (true) { // основной цикл
-        cap.read(frame);
-        if (frame.empty()) {
-            break;
-        }
-
-        cv::Mat hsv_img = BGR_to_HSV(frame);
-        cv::Mat bin_img = HSV_to_Binary(hsv_img);
-
-        std::vector<std::vector<cv::Point>> all_targets;
-        cv::Point priority_target;
-        bool is_targets_found = find_targets(bin_img, AIM_CENTER, all_targets, priority_target);
-
-        cv::Mat result_image = frame.clone();
-
-        if (is_targets_found) {
-            draw_debug_info(result_image, AIM_CENTER, all_targets, priority_target);
-        }
-
-        writer.write(result_image);
-    }
+    std::cout << "Processing video..." << std::endl;
+    process_video_loop(cap, writer, AIM_CENTER);
 
     cap.release();
     writer.release();

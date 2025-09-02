@@ -152,3 +152,28 @@ bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_pat
     
     return true;
 }
+
+void process_video_loop(cv::VideoCapture& cap, cv::VideoWriter& writer, const cv::Point& aim_center) {
+    cv::Mat frame;
+    while (true) {
+        cap.read(frame);
+        if (frame.empty()) {
+            break;
+        }
+
+        cv::Mat hsv_img = BGR_to_HSV(frame);
+        cv::Mat bin_img = HSV_to_Binary(hsv_img);
+
+        std::vector<std::vector<cv::Point>> all_targets;
+        cv::Point priority_target;
+        bool is_targets_found = find_targets(bin_img, aim_center, all_targets, priority_target);
+
+        cv::Mat result_image = frame.clone();
+
+        if (is_targets_found) {
+            draw_debug_info(result_image, aim_center, all_targets, priority_target);
+        }
+
+        writer.write(result_image);
+    }
+}

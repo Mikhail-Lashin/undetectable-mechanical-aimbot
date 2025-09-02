@@ -88,3 +88,17 @@ bool initialize_video_streams(const std::string& input_path, const std::string& 
  * @return true в случае успешного нахождения прицела, иначе false.
  */
 bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_path, cv::Point& out_aim_center);
+
+/**
+ * @brief Запускает основной цикл покадровой обработки видео.
+ * 
+ * Функция в цикле считывает кадры из входного потока, выполняет на них
+ * поиск целей, рисует отладочную информацию и записывает результат
+ * в выходной поток.
+ * 
+ * @param[in,out] cap Объект VideoCapture для чтения кадров. Его состояние (позиция чтения) будет изменено.
+ * @param[in,out] writer Объект VideoWriter для записи обработанных кадров.
+ * @param[in] aim_center Константные координаты центра прицела, используемые для расчетов.
+ * @note Функция выполняется до тех пор, пока во входном потоке `cap` не закончатся кадры.
+ */
+void process_video_loop(cv::VideoCapture& cap, cv::VideoWriter& writer, const cv::Point& aim_center);
