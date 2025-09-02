@@ -96,3 +96,27 @@ bool find_crosshair(const cv::Mat& frame, const cv::Mat& crosshair_template, cv:
 
     return false; // совпадение недостаточно хорошее
 }
+
+bool initialize_video_streams(const std::string& input_path, const std::string& output_path,
+                              cv::VideoCapture& out_cap, cv::VideoWriter& out_writer) 
+{
+    out_cap.open(input_path); // откр видео для чтения
+    if (!out_cap.isOpened()) {
+        std::cout << "Error: Could not open the input video: " << input_path << std::endl;
+        return false;
+    }
+
+    int frame_width = static_cast<int>(out_cap.get(cv::CAP_PROP_FRAME_WIDTH));
+    int frame_height = static_cast<int>(out_cap.get(cv::CAP_PROP_FRAME_HEIGHT));
+    double fps = out_cap.get(cv::CAP_PROP_FPS);
+    cv::Size frame_size(frame_width, frame_height);
+    int fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
+
+    out_writer.open(output_path, fourcc, fps, frame_size); // откр видео для записи
+    if (!out_writer.isOpened()) {
+        std::cout << "Error: Could not create the output video file: " << output_path << std::endl;
+        return false;
+    }
+    
+    return true;
+}

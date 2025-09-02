@@ -11,25 +11,12 @@ int main() {
     
     // -------------------- Открытие и настройка видеопотока --------------------
 
-    cv::VideoCapture cap(input_path); // открытие видео
-    if(!cap.isOpened()) {
-        std::cout << "Error: Could not open the input video: " << input_path << std::endl;
+    cv::VideoCapture cap;
+    cv::VideoWriter writer;
+    if (!initialize_video_streams(input_path, output_path, cap, writer)) {
         return -1;
     }
-
-    int frame_width = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH)); // свойства видеопотока
-    int frame_height = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-    double fps = cap.get(cv::CAP_PROP_FPS);
-    cv::Size frame_size(frame_width, frame_height);
-    
-    int fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v'); // FOURCC - код для идентификации кодека.
-    cv::VideoWriter writer(output_path, fourcc, fps, frame_size); // объект для записи видео
-    if (!writer.isOpened()) {
-        std::cout << "Error: Could not create the output video file: " << output_path << std::endl;
-        return -1;
-    }
-
-    std::cout << "Processing video... Press any key to stop." << std::endl;
+    std::cout << "Video streams initialized successfully." << std::endl;
 
     // -------------------- Поиск начала координат (перекрестье прицела) --------------------
 

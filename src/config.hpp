@@ -1,6 +1,8 @@
 #pragma once 
 #include <opencv2/opencv.hpp>
 
+
+
 const double MIN_CONTOUR_AREA = 50; // минимальная площадь мишени
 
 const int H_MIN = 130;

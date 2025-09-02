@@ -59,3 +59,18 @@ void draw_debug_info(cv::Mat& frame,
  * @return true в случае успешного нахождения с достаточной уверенностью, иначе false
  */
 bool find_crosshair(const cv::Mat& frame, const cv::Mat& crosshair_template, cv::Point& out_center_pos);
+
+/**
+ * @brief Инициализирует объекты для чтения и записи видео.
+ * 
+ * Открывает входной видеофайл для чтения и создает/открывает выходной
+ * видеофайл для записи с теми же параметрами (размер кадра, FPS).
+ * 
+ * @param[in] input_path Путь к входному видеофайлу.
+ * @param[in] output_path Путь к выходному видеофайлу.
+ * @param[out] out_cap Объект VideoCapture, который будет инициализирован.
+ * @param[out] out_writer Объект VideoWriter, который будет инициализирован.
+ * @return true в случае успешной инициализации обоих потоков, иначе false.
+ */
+bool initialize_video_streams(const std::string& input_path, const std::string& output_path,
+                              cv::VideoCapture& out_cap, cv::VideoWriter& out_writer);
