@@ -146,9 +146,6 @@ bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_pat
         std::cout << "Error: Crosshair not found on the first frame. Check template or threshold." << std::endl;
         return false;
     }
-
-    // возврат видео на начало, чтобы основной цикл обработал и первый кадр тоже
-    cap.set(cv::CAP_PROP_POS_FRAMES, 0);
     
     return true;
 }
