@@ -13,3 +13,4 @@ bin/
 *.png
 *.jpg
 *.mp4
+!src/input/crosshair_template.png

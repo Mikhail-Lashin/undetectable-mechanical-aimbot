@@ -6,17 +6,17 @@
 #include "processing.hpp"
 
 int main() {
-    const std::string input_path = "src/input/input.mp4";
-    const std::string output_path = "src/output/output.mp4";
+    const std::string input_path = "../../src/input/input.mp4";
+    const std::string output_path = "../../src/output/output.mp4";
 
-    cv::VideoCapture cap; // открытие и настройка видеопотока
+    cv::VideoCapture cap; //открытие и настройка видеопотока
     cv::VideoWriter writer;
     if (!initialize_video_streams(input_path, output_path, cap, writer)) {
         return -1;
     }
     std::cout << "Video streams initialized successfully." << std::endl;
 
-    const std::string template_path = "src/input/crosshair_template.png"; // поиск начала координат (перекрестье)
+    const std::string template_path = "../../src/input/crosshair_template.png"; //поиск начала координат (перекрестье)
     cv::Point AIM_CENTER;
     if (!calibrate_aim_center(cap, template_path, AIM_CENTER)) {
         return -1;
