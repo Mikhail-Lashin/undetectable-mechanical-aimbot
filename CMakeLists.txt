@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(OpenCV REQUIRED COMPONENTS core highgui imgproc videoio)
 
 # --- Основное приложение ---
-add_executable(aimbot src/main.cpp src/processing.cpp src/gcodesender.cpp src/pid.cpp)
+add_executable(aimbot src/main.cpp src/processing.cpp src/gcodesender.cpp src/pid.cpp src/udp_streamer.cpp)
 # Пути для заголовочников и библиотеки OpenCV ТОЛЬКО к цели aimbot
 target_include_directories(aimbot PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(aimbot PRIVATE ${OpenCV_LIBS})
