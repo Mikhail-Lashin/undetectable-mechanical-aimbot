@@ -31,7 +31,7 @@ cv::Mat HSV_to_Binary(const cv::Mat& hsvImage);
  * @return true, если хотя бы одна подходящая цель была найдена, иначе false
  */
 bool find_targets(const cv::Mat& binImage,
-                  const cv::Point& aim_center,
+                  cv::Point& aim_center,
                   std::vector<std::vector<cv::Point>>& out_all_contours,
                   cv::Point& out_priority_target_pos);
 
@@ -47,7 +47,7 @@ bool find_targets(const cv::Mat& binImage,
  * @param[in] priority_target_pos Координаты приоритетной цели
  */                  
 void draw_debug_info(cv::Mat& frame,
-                     const cv::Point& aim_center,
+                     cv::Point& aim_center,
                      const std::vector<std::vector<cv::Point>>& all_contours,
                      const cv::Point& priority_target_pos);
 
@@ -101,4 +101,4 @@ bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_pat
  * @param[in] aim_center Константные координаты центра прицела, используемые для расчетов.
  * @note Функция выполняется до тех пор, пока во входном потоке `cap` не закончатся кадры.
  */
-void process_video_loop(cv::VideoCapture& cap, cv::VideoWriter& writer, const cv::Point& aim_center);
+void process_video_loop(cv::VideoCapture& cap, cv::VideoWriter& writer, cv::Point& aim_center);

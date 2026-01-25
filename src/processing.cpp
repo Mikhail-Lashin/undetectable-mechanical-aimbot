@@ -19,7 +19,7 @@ cv::Mat HSV_to_Binary(const cv::Mat& hsvImage) {
 }
 
 bool find_targets(const cv::Mat& binImage,
-                  const cv::Point& aim_center,
+                  cv::Point& aim_center,
                   std::vector<std::vector<cv::Point>>& out_all_contours,
                   cv::Point& out_priority_target_pos)
 {
@@ -57,14 +57,14 @@ bool find_targets(const cv::Mat& binImage,
 }
 
 void draw_debug_info(cv::Mat& frame,
-                     const cv::Point& aim_center,
+                     cv::Point& aim_center,
                      const std::vector<std::vector<cv::Point>>& all_contours,
                      const cv::Point& priority_target_pos)
 {
     // Выделение всех целей
     for (const auto& contour : all_contours) {
         cv::Rect bbox = cv::boundingRect(contour);
-        cv::rectangle(frame, bbox, cv::Scalar(0, 255, 0), 1); // рамка
+        cv::rectangle(frame, bbox, cv::Scalar(0, 255, 0), 5); // рамка
     }
 
     // Выделение приоритетной цели
@@ -150,7 +150,7 @@ bool calibrate_aim_center(cv::VideoCapture& cap, const std::string& template_pat
     return true;
 }
 
-void process_video_loop(cv::VideoCapture& cap, cv::VideoWriter& writer, const cv::Point& aim_center) {
+void process_video_loop(cv::VideoCapture& cap, cv::VideoWriter& writer, cv::Point& aim_center) {
     cv::Mat frame;
     while (true) {
         cap.read(frame);
