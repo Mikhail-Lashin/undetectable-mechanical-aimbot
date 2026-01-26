@@ -11,7 +11,7 @@
 
 int main() {
     // ЗАГРУЗКА КОНФИГА
-    if (loadConfig("config.json")) {
+    if (Load_Config("config.json")) {
         std::cout << "Config loaded successfully!" << std::endl;
     } else {
         std::cerr << "Warning: config.json not found, using defaults." << std::endl;

@@ -28,7 +28,7 @@ void Signal_Handler(int signum){
     keepRunning = false;
 }
 void Import_Config(){
-    if (loadConfig()) {
+    if (Load_Config()) {
         config.h_min = H_MIN; config.h_max = H_MAX;
         config.s_min = S_MIN; config.s_max = S_MAX;
         config.v_min = V_MIN; config.v_max = V_MAX;
@@ -102,7 +102,7 @@ void Export_Config(){
     V_MIN = config.v_min; V_MAX = config.v_max;
     AIM_CENTER = config.aim_center;
 
-    if (saveConfig()) {
+    if (Save_Config()) {
         std::cout << "Settings saved." << std::endl;
     } else {
         std::cout << "Failed to save config." << std::endl;

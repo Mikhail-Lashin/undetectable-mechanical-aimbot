@@ -5,12 +5,12 @@ int H_MAX = 150, S_MAX = 255, V_MAX = 255;
 cv::Point AIM_CENTER(320, 240);
 std::string LAPTOP_IP = "192.168.0.230";
 
-std::string getFullConfigPath() {                                           
+std::string Get_Full_Config_Path() {                                           
     return std::string(PROJECT_SOURCE_DIR) + "/config.json"; // абсолютный путь к config.json
 }
 
-bool loadConfig(const std::string& path) {
-    std::string actual_path = path.empty() ? getFullConfigPath() : path;
+bool Load_Config(const std::string& path) {
+    std::string actual_path = path.empty() ? Get_Full_Config_Path() : path;
     cv::FileStorage fs(actual_path, cv::FileStorage::READ);
     if (!fs.isOpened()) return false;
 
@@ -27,8 +27,8 @@ bool loadConfig(const std::string& path) {
     return true;
 }
 
-bool saveConfig(const std::string& path) {
-    std::string actual_path = path.empty() ? getFullConfigPath() : path;
+bool Save_Config(const std::string& path) {
+    std::string actual_path = path.empty() ? Get_Full_Config_Path() : path;
     cv::FileStorage fs(actual_path, cv::FileStorage::WRITE);
     
     fs << "H_MIN" << H_MIN;

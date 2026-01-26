@@ -33,7 +33,7 @@ const float MAX_MOVE_MM = 5.0f; // максимальный рывок за од
  * @return std::string Абсолютный путь к файлу в директории исходного кода проекта
  * @note Путь строится на основе макроса PROJECT_SOURCE_DIR, который передается из CMake
  */
-std::string getFullConfigPath();
+std::string Get_Full_Config_Path();
 
 /**
  * @brief Загружает настройки из JSON-файла и обновляет глобальные переменные
@@ -42,7 +42,7 @@ std::string getFullConfigPath();
  * @note Функция обновляет глобальные параметры: H_MIN/MAX, S_MIN/MAX, V_MIN/MAX, AIM_CENTER и LAPTOP_IP
  * @details Использует cv::FileStorage для парсинга структуры JSON
  */
-bool loadConfig(const std::string& path = "");
+bool Load_Config(const std::string& path = "");
 
 /**
  * @brief Сохраняет текущие значения глобальных переменных в файл конфигурации
@@ -51,4 +51,4 @@ bool loadConfig(const std::string& path = "");
  * @note Формат файла (JSON) определяется автоматически OpenCV по расширению .json
  * @details Записывает текущее состояние всех калибровочных параметров и IP-адрес для связи
  */
-bool saveConfig(const std::string& path = "");
+bool Save_Config(const std::string& path = "");
