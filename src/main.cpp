@@ -10,6 +10,13 @@
 #include "udp_streamer.hpp" 
 
 int main() {
+    // ЗАГРУЗКА КОНФИГА
+    if (loadConfig("config.json")) {
+        std::cout << "Config loaded successfully!" << std::endl;
+    } else {
+        std::cerr << "Warning: config.json not found, using defaults." << std::endl;
+    }
+
     // ПОДКЛЮЧЕНИЕ К KLIPPER
     GCodeSender printer;
     std::cout << "--- [1/4] Connecting to Klipper ---" << std::endl;
