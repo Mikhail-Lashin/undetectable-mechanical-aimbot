@@ -15,7 +15,7 @@ const double MATCH_THRESHOLD = 0.8; // порог уверенности для 
 
 // ОТПРАВКА ОТЛАДОЧНОГО ВИДЕО НА НОУТ
 extern std::string LAPTOP_IP;
-const int LAPTOP_PORT = 9999;
+const int LAPTOP_PORT = 8888;
 
 // ПУТЬ К СОКЕТУ KLIPPER
 const std::string KLIPPER_SOCKET = "/home/ml/printer_data/comms/klippy.sock";
@@ -23,7 +23,7 @@ const std::string KLIPPER_SOCKET = "/home/ml/printer_data/comms/klippy.sock";
 // PID
 const float P_GAIN = 0.03f;
 const float I_GAIN = 0.00f;
-const float D_GAIN = 0.01f;
+const float D_GAIN = 0.00f;
 const float MAX_MOVE_MM = 5.0f; // максимальный рывок за один кадр
 
 // Функции для работы с config.json

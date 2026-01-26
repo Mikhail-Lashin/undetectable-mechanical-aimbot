@@ -17,4 +17,5 @@ private:
     float _min_out, _max_out;
     float _prev_error;
     float _integral;
+    bool _first_run;
 };

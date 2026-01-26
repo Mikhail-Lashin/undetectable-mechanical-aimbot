@@ -65,7 +65,7 @@ void GCodeSender::sendCommand(const std::string& command) {
     std::string packet = ss.str();
 
     // [DEBUG]
-    std::cout << "[TX] Sending: " << command << " ... ";
+    //std::cout << "[TX] Sending: " << command << " ... ";
 
     if (send(sock_fd, packet.c_str(), packet.length(), MSG_NOSIGNAL) == -1) {
         std::cerr << "FAILED (Send error)" << std::endl;
@@ -73,7 +73,7 @@ void GCodeSender::sendCommand(const std::string& command) {
     }
 
     // [DEBUG] Читаем ответ
-    char buffer[4096];
+    /*char buffer[4096];
     int len = recv(sock_fd, buffer, sizeof(buffer)-1, 0);
     
     if (len > 0) {
@@ -81,7 +81,7 @@ void GCodeSender::sendCommand(const std::string& command) {
         std::cout << "REPLY: " << buffer << std::endl;
     } else {
         std::cout << "NO REPLY (Timeout or empty)" << std::endl;
-    }
+    }*/
 }
 
 void GCodeSender::sendMove(float x_mm, float y_mm, int feedrate_mm_min) {
