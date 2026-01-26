@@ -102,12 +102,15 @@ void Export_Config(){
     V_MIN = config.v_min; V_MAX = config.v_max;
     AIM_CENTER = config.aim_center;
 
-    
-    if (saveConfig()) std::cout << "Settings saved." << std::endl;
+    if (saveConfig()) {
+        std::cout << "Settings saved." << std::endl;
+    } else {
+        std::cout << "Failed to save config." << std::endl;
+    }    
 }
 
 int main() {
-    signal(SIGINT, Signal_Handler);                                          // выполнить Signal_Handler() при нажатии cntrl+C
+    signal(SIGINT, Signal_Handler);                                         // выполнить Signal_Handler() при нажатии cntrl+C
 
     cv::VideoCapture cap;                                                   
     if(!Launch_Stream(cap, "192.168.3.21")) return -1;                      // прием видеопотока с rpi
@@ -123,7 +126,7 @@ int main() {
         Setup_Aim_Center();                                                 // калибровка начала координат (вручную)
         cv::waitKey(1);                                                     // для работы калибровочных ползунков и пр
     }
-    Export_Config();                                                          // сохранение конфига
+    Export_Config();                                                        // сохранение конфига
     cap.release();
     cv::destroyAllWindows();
     return 0;
