@@ -15,10 +15,6 @@
 std::string winName = "Camera Settings";                                    // подпись окна с настройками
 bool keepRunning = true;
 
-std::string getFullConfigPath() {                                           // абсолютный путь к config.json
-    return std::string(PROJECT_SOURCE_DIR) + "/config.json";
-}
-
 struct Config {
     int h_min = 0, h_max = 179;
     int s_min = 0, s_max = 255;
@@ -26,6 +22,9 @@ struct Config {
     cv::Point aim_center = {0,0};
 } config;
 
+std::string getFullConfigPath() {                                           
+    return std::string(PROJECT_SOURCE_DIR) + "/config.json"; // абсолютный путь к config.json
+}
 void Signal_Handler(int signum){
     // нужна для сохранения конфига c выходом по cntrl+C
     std::cout << "\nInterrupt signal received. Saving and exiting..." << std::endl;
