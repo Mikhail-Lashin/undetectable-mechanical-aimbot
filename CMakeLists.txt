@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenCV REQUIRED COMPONENTS core highgui imgproc videoio)
 
+add_definitions(-DPROJECT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}") # для определения местоположения config.json в camera_tool.cpp
+
 # --- Основное приложение ---
 add_executable(aimbot src/main.cpp src/processing.cpp src/gcodesender.cpp src/pid.cpp src/udp_streamer.cpp src/config.cpp)
 target_include_directories(aimbot PRIVATE ${OpenCV_INCLUDE_DIRS})
@@ -22,4 +24,3 @@ add_executable(camera_tool utils/camera_tool.cpp src/processing.cpp src/config.c
 target_include_directories(camera_tool PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(camera_tool PRIVATE ${OpenCV_LIBS})
 
-add_definitions(-DPROJECT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}") # для определения местоположения config.json в camera_tool.cpp

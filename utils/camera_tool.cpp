@@ -22,23 +22,19 @@ struct Config {
     cv::Point aim_center = {0,0};
 } config;
 
-std::string getFullConfigPath() {                                           
-    return std::string(PROJECT_SOURCE_DIR) + "/config.json"; // абсолютный путь к config.json
-}
 void Signal_Handler(int signum){
     // нужна для сохранения конфига c выходом по cntrl+C
     std::cout << "\nInterrupt signal received. Saving and exiting..." << std::endl;
     keepRunning = false;
 }
-void Load_Config(){
-     std::string path = getFullConfigPath();
-    if (loadConfig(path)) {
+void Import_Config(){
+    if (loadConfig()) {
         config.h_min = H_MIN; config.h_max = H_MAX;
         config.s_min = S_MIN; config.s_max = S_MAX;
         config.v_min = V_MIN; config.v_max = V_MAX;
         config.aim_center = AIM_CENTER;
 
-        std::cout << "Config loaded from: " << path << std::endl;
+        std::cout << "Config loaded/" << std::endl;
     } else {
         std::cout << "Failed to load config or file not found." << std::endl;
     }
@@ -100,15 +96,14 @@ void Show_Settings_Window(cv::Mat& frame_bgr){
     cv::hconcat(frame_bgr, mask_bgr, combined); 
     cv::imshow(winName, combined);
 }
-void Save_Config(){
+void Export_Config(){
     H_MIN = config.h_min; H_MAX = config.h_max;                             // сохранение параметров для config.json
     S_MIN = config.s_min; S_MAX = config.s_max;
     V_MIN = config.v_min; V_MAX = config.v_max;
     AIM_CENTER = config.aim_center;
 
-    std::string path = getFullConfigPath();
-    saveConfig(path);
-    std::cout << "Settings saved to: " << path << std::endl;
+    
+    if (saveConfig()) std::cout << "Settings saved." << std::endl;
 }
 
 int main() {
@@ -116,7 +111,7 @@ int main() {
 
     cv::VideoCapture cap;                                                   
     if(!Launch_Stream(cap, "192.168.3.21")) return -1;                      // прием видеопотока с rpi
-    Load_Config();                                                          // подтягиваем значения из старого конфига
+    Import_Config();                                                        // подтягиваем значения из старого конфига
     Setup_UI();                                                             // инициализация интерфейса (ползунки)
     cv::Mat frame_bgr;
     while (keepRunning) {
@@ -128,7 +123,7 @@ int main() {
         Setup_Aim_Center();                                                 // калибровка начала координат (вручную)
         cv::waitKey(1);                                                     // для работы калибровочных ползунков и пр
     }
-    Save_Config();                                                          // сохранение конфига
+    Export_Config();                                                          // сохранение конфига
     cap.release();
     cv::destroyAllWindows();
     return 0;

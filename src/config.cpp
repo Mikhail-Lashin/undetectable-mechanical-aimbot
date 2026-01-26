@@ -5,8 +5,13 @@ int H_MAX = 150, S_MAX = 255, V_MAX = 255;
 cv::Point AIM_CENTER(320, 240);
 std::string LAPTOP_IP = "192.168.0.230";
 
-bool loadConfig(const std::string& filename) {
-    cv::FileStorage fs(filename, cv::FileStorage::READ);
+std::string getFullConfigPath() {                                           
+    return std::string(PROJECT_SOURCE_DIR) + "/config.json"; // абсолютный путь к config.json
+}
+
+bool loadConfig(const std::string& path) {
+    std::string actual_path = path.empty() ? getFullConfigPath() : path;
+    cv::FileStorage fs(actual_path, cv::FileStorage::READ);
     if (!fs.isOpened()) return false;
 
     fs["H_MIN"] >> H_MIN;
@@ -17,13 +22,14 @@ bool loadConfig(const std::string& filename) {
     fs["V_MAX"] >> V_MAX;
     fs["AIM_CENTER"] >> AIM_CENTER;
     fs["LAPTOP_IP"] >> LAPTOP_IP;
-
     fs.release();
+
     return true;
 }
 
-void saveConfig(const std::string& filename) {
-    cv::FileStorage fs(filename, cv::FileStorage::WRITE); // OpenCV определяет формат .json по расширению файла автоматически
+bool saveConfig(const std::string& path) {
+    std::string actual_path = path.empty() ? getFullConfigPath() : path;
+    cv::FileStorage fs(actual_path, cv::FileStorage::WRITE);
     
     fs << "H_MIN" << H_MIN;
     fs << "S_MIN" << S_MIN;
@@ -33,6 +39,7 @@ void saveConfig(const std::string& filename) {
     fs << "V_MAX" << V_MAX;
     fs << "AIM_CENTER" << AIM_CENTER;
     fs << "LAPTOP_IP" << LAPTOP_IP;
-
     fs.release();
+
+    return true;
 }

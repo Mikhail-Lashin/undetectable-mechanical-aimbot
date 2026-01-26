@@ -27,5 +27,28 @@ const float D_GAIN = 0.01f;
 const float MAX_MOVE_MM = 5.0f; // максимальный рывок за один кадр
 
 // Функции для работы с config.json
-bool loadConfig(const std::string& filename);
-void saveConfig(const std::string& filename);
+
+/**
+ * @brief Формирует полный абсолютный путь к файлу конфигурации config.json
+ * @return std::string Абсолютный путь к файлу в директории исходного кода проекта
+ * @note Путь строится на основе макроса PROJECT_SOURCE_DIR, который передается из CMake
+ */
+std::string getFullConfigPath();
+
+/**
+ * @brief Загружает настройки из JSON-файла и обновляет глобальные переменные
+ * @param[in] path Путь к файлу конфигурации. Если передан пустая строка, используется путь по умолчанию
+ * @return true, если файл успешно открыт и данные прочитаны; false в случае ошибки
+ * @note Функция обновляет глобальные параметры: H_MIN/MAX, S_MIN/MAX, V_MIN/MAX, AIM_CENTER и LAPTOP_IP
+ * @details Использует cv::FileStorage для парсинга структуры JSON
+ */
+bool loadConfig(const std::string& path = "");
+
+/**
+ * @brief Сохраняет текущие значения глобальных переменных в файл конфигурации
+ * @param[in] path Путь для сохранения файла. Если передан пустая строка, используется путь по умолчанию
+ * @return true, если запись прошла успешно; false, если не удалось создать или открыть файл на запись
+ * @note Формат файла (JSON) определяется автоматически OpenCV по расширению .json
+ * @details Записывает текущее состояние всех калибровочных параметров и IP-адрес для связи
+ */
+bool saveConfig(const std::string& path = "");

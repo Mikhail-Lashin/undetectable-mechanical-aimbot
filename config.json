@@ -1,10 +1,10 @@
 {
     "H_MIN": 122,
     "S_MIN": 120,
-    "V_MIN": 85,
+    "V_MIN": 88,
     "H_MAX": 157,
     "S_MAX": 255,
     "V_MAX": 255,
-    "AIM_CENTER": [ 346, 312 ],
+    "AIM_CENTER": [ 517, 312 ],
     "LAPTOP_IP": "192.168.0.230"
 }
